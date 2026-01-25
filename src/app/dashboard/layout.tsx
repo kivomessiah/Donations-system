@@ -82,10 +82,10 @@ export default async function DashboardLayout({
                         <Link
                             key={item.href}
                             href={item.href}
-                            className="flex items-center gap-3 px-4 py-3 text-gray-700 font-bold rounded-xl hover:bg-indigo-50 hover:text-indigo-800 transition-all group"
+                            className="flex items-center gap-3 px-4 py-3 text-black font-black rounded-xl hover:bg-indigo-600 hover:text-white transition-all group"
                         >
-                            <item.icon className="w-5 h-5 group-hover:scale-110 transition-transform text-gray-600 group-hover:text-indigo-700" />
-                            <span className="font-bold">{item.name}</span>
+                            <item.icon className="w-5 h-5 group-hover:scale-110 transition-transform text-black group-hover:text-white" />
+                            <span className="font-black">{item.name}</span>
                         </Link>
                     ))}
                 </nav>
@@ -94,7 +94,7 @@ export default async function DashboardLayout({
                     <form action={logout}>
                         <button
                             type="submit"
-                            className="flex items-center gap-3 px-4 py-3 w-full text-red-500 rounded-xl hover:bg-red-50 transition-all font-medium"
+                            className="flex items-center gap-3 px-4 py-3 w-full text-red-700 rounded-xl hover:bg-red-50 transition-all font-black"
                         >
                             <LogOut className="w-5 h-5" />
                             تسجيل خروج

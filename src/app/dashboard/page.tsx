@@ -80,12 +80,12 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                         <TrendingUp size={100} />
                     </div>
                     <div className="flex items-center gap-4 mb-4">
-                        <div className="p-3 bg-green-50 text-green-600 rounded-xl">
+                        <div className="p-3 bg-green-50 text-green-600 rounded-xl border border-green-100">
                             <TrendingUp size={24} />
                         </div>
-                        <h3 className="text-gray-500 font-medium">إجمالي التبرعات</h3>
+                        <h3 className="text-black font-black text-lg">إجمالي التبرعات</h3>
                     </div>
-                    <p className="text-3xl font-bold text-gray-900">{stats.donations.toLocaleString()} ج.م</p>
+                    <p className="text-3xl font-black text-black">{stats.donations.toLocaleString()} ج.م</p>
                 </div>
 
                 {/* Expense Card */}
@@ -94,12 +94,12 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                         <TrendingDown size={100} />
                     </div>
                     <div className="flex items-center gap-4 mb-4">
-                        <div className="p-3 bg-red-50 text-red-600 rounded-xl">
+                        <div className="p-3 bg-red-50 text-red-600 rounded-xl border border-red-100">
                             <TrendingDown size={24} />
                         </div>
-                        <h3 className="text-gray-500 font-medium">إجمالي المصروفات</h3>
+                        <h3 className="text-black font-black text-lg">إجمالي المصروفات</h3>
                     </div>
-                    <p className="text-3xl font-bold text-gray-900">{stats.expenses.toLocaleString()} ج.م</p>
+                    <p className="text-3xl font-black text-black">{stats.expenses.toLocaleString()} ج.م</p>
                 </div>
 
                 {/* Balance Card */}
@@ -108,12 +108,12 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                         <Wallet size={100} />
                     </div>
                     <div className="flex items-center gap-4 mb-4">
-                        <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl">
+                        <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl border border-indigo-100">
                             <Wallet size={24} />
                         </div>
-                        <h3 className="text-gray-500 font-medium">الرصيد المتبقي</h3>
+                        <h3 className="text-black font-black text-lg">الرصيد المتبقي</h3>
                     </div>
-                    <p className="text-3xl font-bold text-gray-900">{stats.balance.toLocaleString()} ج.م</p>
+                    <p className="text-3xl font-black text-black">{stats.balance.toLocaleString()} ج.م</p>
                 </div>
             </div>
 

@@ -11,20 +11,32 @@ export default async function UsersPage() {
         redirect("/dashboard");
     }
 
-    const rawUsers = await prisma.user.findMany({
+    const activeUsers = await prisma.user.findMany({
+        where: { status: "ACTIVE" },
         select: {
             email: true,
             name: true,
             role: true,
+            status: true,
         },
-        orderBy: {
-            name: 'asc'
-        }
+        orderBy: { name: 'asc' }
+    });
+
+    const pendingUsers = await prisma.user.findMany({
+        where: { status: "PENDING" },
+        select: {
+            email: true,
+            name: true,
+            role: true,
+            status: true,
+        },
+        orderBy: { name: 'asc' }
     });
 
     return (
         <UserManagementClient
-            users={rawUsers}
+            activeUsers={activeUsers}
+            pendingUsers={pendingUsers}
             currentUser={{
                 email: session.user.email,
                 role: session.user.role

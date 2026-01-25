@@ -10,8 +10,9 @@ datasource db {
 model User {
   email     String @id
   name      String
-  role      String // ADMIN, FINANCE, ENTRY
+  role      String // ADMIN, FINANCE, ENTRY, VIEWER
   password  String // Hashed
+  status    String @default("PENDING") // PENDING, ACTIVE, REJECTED
 }
 
 model Transaction {

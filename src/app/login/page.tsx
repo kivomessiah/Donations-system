@@ -2,7 +2,9 @@
 
 import { useActionState } from "react";
 import { login } from "@/actions/auth";
+import { ArrowRight, Lock, Mail } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const initialState = {
     error: "",
@@ -50,56 +52,57 @@ export default function LoginPage() {
 
                 <form action={formAction} className="space-y-6">
                     <div>
-                        <label
-                            htmlFor="email"
-                            className="block text-sm font-bold text-gray-900 mb-2"
-                        >
-                            البريد الإلكتروني
-                        </label>
+                        <label className="block text-sm font-bold text-black mb-2 mr-1">البريد الإلكتروني</label>
                         <input
-                            id="email"
                             name="email"
                             type="email"
                             required
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none bg-white text-gray-900 font-medium placeholder-gray-400"
-                            placeholder="name@example.com"
+                            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-600 outline-none transition-all placeholder:text-gray-400 bg-white/50 font-bold text-black"
+                            placeholder="mail@example.com"
                         />
                     </div>
 
                     <div>
-                        <label
-                            htmlFor="password"
-                            className="block text-sm font-bold text-gray-900 mb-2"
-                        >
-                            كلمة المرور
-                        </label>
+                        <label className="block text-sm font-bold text-black mb-2 mr-1">كلمة المرور</label>
                         <input
-                            id="password"
                             name="password"
                             type="password"
                             required
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none bg-white text-gray-900 font-medium placeholder-gray-400"
+                            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-600 outline-none transition-all placeholder:text-gray-400 bg-white/50 font-bold text-black"
                             placeholder="••••••••"
                         />
                     </div>
 
                     {state?.error && (
-                        <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            className="text-red-500 text-sm text-center bg-red-50 p-2 rounded-md"
-                        >
+                        <div className="p-4 rounded-xl bg-red-50/50 border border-red-100 text-red-700 text-sm font-bold flex items-center gap-2 animate-shake">
+                            <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
                             {state.error}
-                        </motion.div>
+                        </div>
                     )}
 
                     <button
-                        type="submit"
                         disabled={isPending}
-                        className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transform transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                        type="submit"
+                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-xl font-black text-lg shadow-xl shadow-indigo-200 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 group"
                     >
-                        {isPending ? "جاري التسجيل..." : "دخول"}
+                        {isPending ? (
+                            <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                            <>
+                                <span>دخول للنظام</span>
+                                <ArrowRight className="w-5 h-5 group-hover:translate-x-[-4px] transition-transform" />
+                            </>
+                        )}
                     </button>
+
+                    <div className="text-center pt-2">
+                        <Link
+                            href="/register"
+                            className="text-indigo-700 font-extrabold hover:text-indigo-900 underline-offset-4 hover:underline transition-all"
+                        >
+                            ليس لديك حساب؟ طلب انضمام جديد
+                        </Link>
+                    </div>
                 </form>
             </motion.div>
         </div>

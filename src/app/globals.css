@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+@layer base {
+  body {
+    @apply text-black font-bold;
+  }
+}
+
+/* Force high contrast for all standard labels and texts */
+.text-gray-500,
+.text-gray-600,
+.text-gray-700 {
+  @apply text-black opacity-90 font-bold !important;
+}
+
+.text-gray-400 {
+  @apply text-gray-700 font-bold !important;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
