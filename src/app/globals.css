@@ -1,20 +1,24 @@
 @import "tailwindcss";
 
-@layer base {
-  body {
-    @apply text-black font-bold;
-  }
+body {
+  color: black;
+  font-weight: 700;
+  /* Bold */
 }
 
 /* Force high contrast for all standard labels and texts */
 .text-gray-500,
 .text-gray-600,
 .text-gray-700 {
-  @apply text-black opacity-90 font-bold !important;
+  color: black !important;
+  opacity: 0.9 !important;
+  font-weight: 700 !important;
 }
 
 .text-gray-400 {
-  @apply text-gray-700 font-bold !important;
+  color: #374151 !important;
+  /* Gray-700 */
+  font-weight: 700 !important;
 }
 
 :root {
