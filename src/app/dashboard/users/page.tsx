@@ -39,7 +39,8 @@ export default async function UsersPage() {
             pendingUsers={pendingUsers}
             currentUser={{
                 email: session.user.email,
-                role: session.user.role
+                role: session.user.role,
+                isUsersAuthorized: !!session.user.isUsersAuthorized
             }}
         />
     );

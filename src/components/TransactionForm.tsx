@@ -66,7 +66,7 @@ export default function TransactionForm() {
                     <input
                         name="name"
                         required
-                        placeholder="مثال: أحمد محمد أو شراء بطاطين"
+                        placeholder=""
                         className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 outline-none transition-all font-black text-black placeholder:text-gray-400 text-xl"
                     />
                 </div>
@@ -103,7 +103,7 @@ export default function TransactionForm() {
                     <textarea
                         name="notes"
                         rows={3}
-                        placeholder="أي تفاصيل إضافية..."
+                        placeholder=""
                         className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 outline-none transition-all font-black text-black placeholder:text-gray-400 text-xl"
                     ></textarea>
                 </div>

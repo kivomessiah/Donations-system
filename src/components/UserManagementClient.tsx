@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createUser, changePassword, updateUser, approveUser, rejectUser } from "@/actions/users";
+import { createUser, changePassword, updateUser, approveUser, rejectUser, deleteUser, verifyUsersAccess } from "@/actions/users";
 import {
     Shield,
     User as UserIcon,
@@ -16,7 +16,9 @@ import {
     Pencil,
     CheckCircle,
     XCircle,
-    Clock
+    Clock,
+    Trash2,
+    Lock
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -34,8 +36,10 @@ export default function UserManagementClient({
 }: {
     activeUsers: User[],
     pendingUsers: User[],
-    currentUser: { email: string, role: string }
+    currentUser: { email: string, role: string, isUsersAuthorized: boolean }
 }) {
+    const [isAuthorized, setIsAuthorized] = useState(currentUser.isUsersAuthorized);
+    const [authPass, setAuthPass] = useState("");
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -45,23 +49,70 @@ export default function UserManagementClient({
     const [message, setMessage] = useState("");
     const [showPass, setShowPass] = useState(false);
 
-    const handleAction = async (action: Function, formData?: FormData | string) => {
+    const handleAction = async (action: Function, ...args: any[]) => {
         setPending(true);
         setError("");
-        const res = await action(formData);
+        const res = await action(...args);
         setPending(false);
         if (res.error) setError(res.error);
         else {
-            setMessage(res.message || "تمت العملية بنجاح");
+            if (res.success) setMessage(res.message || "تمت العملية بنجاح");
+
+            // Specialized logic for verification
+            if (action === verifyUsersAccess && res.success) {
+                setIsAuthorized(true);
+            }
+
             setTimeout(() => {
                 setIsAddModalOpen(false);
                 setIsEditModalOpen(false);
                 setIsPasswordModalOpen(false);
                 setMessage("");
                 setTargetUser(null);
-            }, 1500);
+            }, 1000);
         }
     };
+
+    if (!isAuthorized) {
+        return (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-50/80 backdrop-blur-xl">
+                <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="bg-white p-10 rounded-[2.5rem] shadow-2xl border-2 border-gray-100 w-full max-w-md text-center"
+                >
+                    <div className="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg rotate-3">
+                        <Lock size={40} />
+                    </div>
+                    <h2 className="text-3xl font-black text-black mb-2">منطقة محمية</h2>
+                    <p className="text-black font-bold text-lg mb-8 opacity-80">يرجى إدخال كلمة المرور الخاصة بك للوصول لإدارة المستخدمين</p>
+
+                    <form onSubmit={(e) => {
+                        e.preventDefault();
+                        handleAction(verifyUsersAccess, authPass);
+                    }} className="space-y-6">
+                        <input
+                            type="password"
+                            required
+                            value={authPass}
+                            onChange={(e) => setAuthPass(e.target.value)}
+                            placeholder="كلمة مرور المسؤول"
+                            className="w-full px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-indigo-600 outline-none font-black text-black text-xl text-center"
+                        />
+                        {error && <div className="p-4 bg-red-50 text-red-700 rounded-2xl text-sm font-black border border-red-100 flex items-center justify-center gap-2">
+                            <AlertCircle size={20} /> {error}
+                        </div>}
+                        <button
+                            disabled={pending}
+                            className="w-full bg-black text-white py-5 rounded-2xl font-black text-xl shadow-xl hover:bg-gray-900 transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
+                        >
+                            {pending ? <Loader2 className="animate-spin" /> : "تأكيد الدخول"}
+                        </button>
+                    </form>
+                </motion.div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-12 pb-20">
@@ -124,6 +175,19 @@ export default function UserManagementClient({
                                                 >
                                                     <Key size={20} />
                                                 </button>
+                                                {user.email !== currentUser.email && (
+                                                    <button
+                                                        onClick={() => {
+                                                            if (confirm(`هل أنت متأكد من حذف حساب ${user.name}؟`)) {
+                                                                handleAction(() => deleteUser(user.email));
+                                                            }
+                                                        }}
+                                                        className="p-2.5 text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                                                        title="حذف المستخدم"
+                                                    >
+                                                        <Trash2 size={20} />
+                                                    </button>
+                                                )}
                                             </div>
                                         </td>
                                     </tr>
@@ -209,8 +273,16 @@ export default function UserManagementClient({
 
                                 {!isEditModalOpen && (
                                     <div>
-                                        <label className="block text-sm font-black text-black mb-2 mr-1">البريد الإلكتروني</label>
-                                        <input type="email" name="email" required className="w-full px-5 py-3 rounded-2xl border-2 border-gray-100 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 outline-none font-black text-black text-lg transition-all" />
+                                        <label className="block text-sm font-black text-black mb-2 mr-1">اسم المستخدم (الإيميل)</label>
+                                        <div className="flex gap-2 items-center">
+                                            <input
+                                                name="email"
+                                                required
+                                                className="flex-1 px-5 py-3 rounded-2xl border-2 border-gray-100 focus:border-indigo-600 outline-none font-black text-black text-lg"
+                                                placeholder=""
+                                            />
+                                            <span className="font-black text-indigo-700 bg-indigo-50 px-3 py-3 rounded-xl border-2 border-indigo-100 text-sm">@admin.com</span>
+                                        </div>
                                     </div>
                                 )}
 

@@ -6,6 +6,7 @@ export interface SessionData {
         name: string;
         role: string;
         isLoggedIn: boolean;
+        isUsersAuthorized?: boolean;
     };
 }
 

@@ -48,6 +48,34 @@ export async function addTransaction(prevState: any, formData: FormData) {
     const data = result.data;
 
     try {
+        // Financial Guardrail: Check balance for expenses
+        if (data.type === "EXPENSE") {
+            const aggregate = await prisma.transaction.aggregate({
+                where: { isActive: true },
+                _sum: { amount: true },
+            });
+
+            // To get accurate balance: Sum(Donations) - Sum(Expenses)
+            // But we can just use the business logic sum helper if available or do it here.
+            // Let's do it here for precision.
+            const donationsSum = await prisma.transaction.aggregate({
+                where: { type: "DONATION", isActive: true },
+                _sum: { amount: true }
+            });
+            const expensesSum = await prisma.transaction.aggregate({
+                where: { type: "EXPENSE", isActive: true },
+                _sum: { amount: true }
+            });
+
+            const currentBalance = (donationsSum._sum.amount || 0) - (expensesSum._sum.amount || 0);
+
+            if (data.amount > currentBalance) {
+                return {
+                    error: `عذراً، الرصيد لا يكفي. الرصيد الحالي هو ${currentBalance.toLocaleString()} ج.م والمبلغ المطلوب خصمه هو ${data.amount.toLocaleString()} ج.م`
+                };
+            }
+        }
+
         await prisma.transaction.create({
             data: {
                 type: data.type,

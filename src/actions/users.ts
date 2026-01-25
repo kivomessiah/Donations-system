@@ -11,18 +11,20 @@ export async function createUser(formData: FormData) {
         return { error: "غير مصرح لك بإضافة مستخدمين" };
     }
 
-    const email = formData.get("email") as string;
+    const emailPrefix = formData.get("email") as string;
     const name = formData.get("name") as string;
     const role = formData.get("role") as string;
     const password = formData.get("password") as string;
 
-    if (!email || !name || !role || !password) {
+    if (!emailPrefix || !name || !role || !password) {
         return { error: "جميع الحقول مطلوبة" };
     }
 
+    const email = `${emailPrefix}@admin.com`;
+
     try {
         const existing = await prisma.user.findUnique({ where: { email } });
-        if (existing) return { error: "هذا البريد المستخدم مسبقاً" };
+        if (existing) return { error: "اسم المستخدم هذا موجود بالفعل" };
 
         const hashedPassword = await bcrypt.hash(password, 10);
         await prisma.user.create({
@@ -44,18 +46,21 @@ export async function createUser(formData: FormData) {
 }
 
 export async function registerUser(state: any, formData: FormData) {
-    const email = formData.get("email") as string;
+    const emailPrefix = formData.get("email") as string;
     const name = formData.get("name") as string;
     const role = formData.get("role") as string;
     const password = formData.get("password") as string;
 
-    if (!email || !name || !role || !password) {
+    if (!emailPrefix || !name || !role || !password) {
         return { error: "جميع الحقول مطلوبة" };
     }
 
+    // Append domain automatically
+    const email = `${emailPrefix}@admin.com`;
+
     try {
         const existing = await prisma.user.findUnique({ where: { email } });
-        if (existing) return { error: "هذا البريد المستخدم مسبقاً" };
+        if (existing) return { error: "اسم المستخدم هذا موجود بالفعل" };
 
         const hashedPassword = await bcrypt.hash(password, 10);
         await prisma.user.create({
@@ -172,5 +177,48 @@ export async function changePassword(formData: FormData) {
     } catch (error) {
         console.error("Change Password Error:", error);
         return { error: "حدث خطأ غير متوقع" };
+    }
+}
+
+export async function deleteUser(email: string) {
+    const session = await getSession();
+    if (session.user?.role !== "ADMIN") return { error: "غير مصرح لك بالحذف" };
+    if (session.user.email === email) return { error: "لا يمكنك حذف حسابك الشخصي" };
+
+    try {
+        await prisma.user.delete({
+            where: { email }
+        });
+        revalidatePath("/dashboard/users");
+        return { success: true, message: "تم حذف المستخدم بنجاح" };
+    } catch (error) {
+        console.error("Delete User Error:", error);
+        return { error: "حدث خطأ أثناء الحذف" };
+    }
+}
+
+export async function verifyUsersAccess(password: string) {
+    const session = await getSession();
+    if (!session.user?.isLoggedIn || session.user.role !== "ADMIN") {
+        return { error: "غير مصرح لك" };
+    }
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: { email: session.user.email }
+        });
+
+        if (!user) return { error: "تعذر العثور على حسابك" };
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return { error: "كلمة المرور غير صحيحة" };
+
+        // Save verification state in session
+        session.user.isUsersAuthorized = true;
+        await session.save();
+
+        return { success: true };
+    } catch (error) {
+        return { error: "حدث خطأ أثناء التحقق" };
     }
 }

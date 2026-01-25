@@ -58,19 +58,21 @@ export default function RegisterPage() {
                             name="name"
                             required
                             className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-black"
-                            placeholder="الأسم الثلاثي"
+                            placeholder=""
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-black text-black mb-2 mr-1">البريد الإلكتروني</label>
-                        <input
-                            name="email"
-                            type="email"
-                            required
-                            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-black"
-                            placeholder="mail@example.com"
-                        />
+                        <label className="block text-sm font-black text-black mb-2 mr-1">اسم المستخدم (الإيميل)</label>
+                        <div className="flex gap-2 items-center">
+                            <input
+                                name="email"
+                                required
+                                className="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-black"
+                                placeholder=""
+                            />
+                            <span className="font-black text-indigo-700 bg-indigo-50 px-3 py-3 rounded-xl border border-indigo-100">@admin.com</span>
+                        </div>
                     </div>
 
                     <div>
@@ -93,7 +95,7 @@ export default function RegisterPage() {
                             type="password"
                             required
                             className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-black"
-                            placeholder="••••••••"
+                            placeholder=""
                         />
                     </div>
 

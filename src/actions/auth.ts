@@ -41,6 +41,15 @@ export async function login(prevState: any, formData: FormData) {
             return { error: "البريد الإلكتروني أو كلمة المرور غير صحيحة" };
         }
 
+        // Security check: Only ACTIVE users can login
+        if (user.status === "PENDING") {
+            return { error: "حسابك قيد الانتظار، يرجى التواصل مع المسؤول لتفعيل الحساب" };
+        }
+
+        if (user.status === "REJECTED") {
+            return { error: "عذراً، تم رفض طلب انضمامك للنظام" };
+        }
+
         session.user = {
             email: user.email,
             name: user.name,
