@@ -17,10 +17,18 @@ type Transaction = {
     enteredBy: string;
 };
 
-export default function TransactionList({ transactions }: { transactions: Transaction[] }) {
+export default function TransactionList({
+    transactions,
+    userRole,
+}: {
+    transactions: Transaction[];
+    userRole?: string;
+}) {
     const router = useRouter();
     const [filterType, setFilterType] = useState("ALL");
     const [search, setSearch] = useState("");
+
+    const isViewer = userRole === "VIEWER";
 
     const handleToggle = async (id: string) => {
         if (confirm("هل أنت متأكد من تغيير حالة السجل؟")) {
@@ -95,7 +103,7 @@ export default function TransactionList({ transactions }: { transactions: Transa
                                 <th className="p-4">طريقة الدفع</th>
                                 <th className="p-4">المسؤول</th>
                                 <th className="p-4">الحالة</th>
-                                <th className="p-4">إجراءات</th>
+                                {!isViewer && <th className="p-4">إجراءات</th>}
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
@@ -132,18 +140,20 @@ export default function TransactionList({ transactions }: { transactions: Transa
                                             {t.isActive ? 'نشط' : 'ملغي'}
                                         </span>
                                     </td>
-                                    <td className="p-4">
-                                        <button
-                                            onClick={() => handleToggle(t.id)}
-                                            className={`p-2 rounded-lg transition-colors ${t.isActive
-                                                ? 'text-red-400 hover:bg-red-50 hover:text-red-600'
-                                                : 'text-indigo-400 hover:bg-indigo-50 hover:text-indigo-600'
-                                                }`}
-                                            title={t.isActive ? "إلغاء السجل" : "استعادة السجل"}
-                                        >
-                                            {t.isActive ? <Trash2 size={18} /> : <Undo2 size={18} />}
-                                        </button>
-                                    </td>
+                                    {!isViewer && (
+                                        <td className="p-4">
+                                            <button
+                                                onClick={() => handleToggle(t.id)}
+                                                className={`p-2 rounded-lg transition-colors ${t.isActive
+                                                    ? 'text-red-400 hover:bg-red-50 hover:text-red-600'
+                                                    : 'text-indigo-400 hover:bg-indigo-50 hover:text-indigo-600'
+                                                    }`}
+                                                title={t.isActive ? "إلغاء السجل" : "استعادة السجل"}
+                                            >
+                                                {t.isActive ? <Trash2 size={18} /> : <Undo2 size={18} />}
+                                            </button>
+                                        </td>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>

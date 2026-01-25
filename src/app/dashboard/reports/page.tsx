@@ -29,13 +29,15 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
     });
 
     return (
-        <div className="max-w-6xl mx-auto space-y-8">
-            <div>
-                <h1 className="text-3xl font-bold text-gray-800">التقارير والسجلات</h1>
-                <p className="text-gray-500 mt-2">عرض وإدارة جميع عمليات التبرع والمصروفات</p>
+        <div className="space-y-8">
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-800">التقارير التفصيلية</h1>
+                    <p className="text-gray-500 mt-1 font-medium">عرض وتصفية جميع العمليات المسجلة</p>
+                </div>
             </div>
 
-            <TransactionList transactions={transactions} />
+            <TransactionList transactions={transactions} userRole={session.user?.role} />
         </div>
     );
 }

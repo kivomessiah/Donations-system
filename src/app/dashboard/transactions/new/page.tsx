@@ -1,13 +1,15 @@
 import TransactionForm from "@/components/TransactionForm";
+import { getSession } from "@/actions/auth";
+import { redirect } from "next/navigation";
 
-export default function NewTransactionPage() {
+export default async function NewTransactionPage() {
+    const session = await getSession();
+    if (session.user?.role === "VIEWER") {
+        redirect("/dashboard");
+    }
+
     return (
-        <div className="max-w-4xl mx-auto">
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-800">إضافة عملية جديدة</h1>
-                <p className="text-gray-500 mt-2">قم بإدخال بيانات التبرع أو المصروف بدقة</p>
-            </div>
-
+        <div className="py-8">
             <TransactionForm />
         </div>
     );
