@@ -68,6 +68,7 @@ export default function RegisterPage() {
                             <input
                                 name="email"
                                 required
+                                dir="ltr"
                                 className="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-black"
                                 placeholder=""
                             />
@@ -94,6 +95,7 @@ export default function RegisterPage() {
                             name="password"
                             type="password"
                             required
+                            dir="ltr"
                             className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-4 focus:ring-indigo-100 outline-none font-bold text-black"
                             placeholder=""
                         />

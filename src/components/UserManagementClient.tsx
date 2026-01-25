@@ -97,6 +97,7 @@ export default function UserManagementClient({
                             value={authPass}
                             onChange={(e) => setAuthPass(e.target.value)}
                             placeholder="كلمة مرور المسؤول"
+                            dir="ltr"
                             className="w-full px-6 py-4 rounded-2xl border-2 border-gray-100 focus:border-indigo-600 outline-none font-black text-black text-xl text-center"
                         />
                         {error && <div className="p-4 bg-red-50 text-red-700 rounded-2xl text-sm font-black border border-red-100 flex items-center justify-center gap-2">
@@ -278,6 +279,7 @@ export default function UserManagementClient({
                                             <input
                                                 name="email"
                                                 required
+                                                dir="ltr"
                                                 className="flex-1 px-5 py-3 rounded-2xl border-2 border-gray-100 focus:border-indigo-600 outline-none font-black text-black text-lg"
                                                 placeholder=""
                                             />
@@ -300,7 +302,7 @@ export default function UserManagementClient({
                                     <div>
                                         <label className="block text-sm font-black text-black mb-2 mr-1">كلمة المرور</label>
                                         <div className="relative">
-                                            <input type={showPass ? "text" : "password"} name="password" required className="w-full px-5 py-3 rounded-2xl border-2 border-gray-100 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 outline-none font-black text-black text-lg transition-all" />
+                                            <input dir="ltr" type={showPass ? "text" : "password"} name="password" required className="w-full px-5 py-3 rounded-2xl border-2 border-gray-100 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 outline-none font-black text-black text-lg transition-all" />
                                             <button type="button" onClick={() => setShowPass(!showPass)} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black">{showPass ? <EyeOff size={22} /> : <Eye size={22} />}</button>
                                         </div>
                                     </div>
@@ -337,11 +339,11 @@ export default function UserManagementClient({
                                     <label className="block text-sm font-black text-black mb-2 mr-1">
                                         {currentUser.email === targetUser.email ? "كلمة المرور الحالية" : "كلمة مرورك أنت (كمسؤول)"}
                                     </label>
-                                    <input type="password" name="verificationPassword" required className="w-full px-5 py-3 rounded-2xl border-2 border-gray-100 focus:border-indigo-600 outline-none font-black text-black text-lg" />
+                                    <input dir="ltr" type="password" name="verificationPassword" required className="w-full px-5 py-3 rounded-2xl border-2 border-gray-100 focus:border-indigo-600 outline-none font-black text-black text-lg" />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-black text-black mb-2 mr-1">كلمة المرور الجديدة</label>
-                                    <input type="password" name="newPassword" required className="w-full px-5 py-3 rounded-2xl border-2 border-gray-100 focus:border-indigo-600 outline-none font-black text-black text-lg" />
+                                    <input dir="ltr" type="password" name="newPassword" required className="w-full px-5 py-3 rounded-2xl border-2 border-gray-100 focus:border-indigo-600 outline-none font-black text-black text-lg" />
                                 </div>
 
                                 {error && <div className="p-4 bg-red-50 text-red-700 rounded-2xl text-sm font-black border border-red-100">{error}</div>}

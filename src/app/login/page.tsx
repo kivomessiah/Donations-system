@@ -57,6 +57,7 @@ export default function LoginPage() {
                             name="email"
                             type="email"
                             required
+                            dir="ltr"
                             className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-600 outline-none transition-all placeholder:text-gray-400 bg-white/50 font-bold text-black"
                             placeholder="mail@example.com"
                         />
@@ -68,6 +69,7 @@ export default function LoginPage() {
                             name="password"
                             type="password"
                             required
+                            dir="ltr"
                             className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-600 outline-none transition-all placeholder:text-gray-400 bg-white/50 font-bold text-black"
                             placeholder="••••••••"
                         />
