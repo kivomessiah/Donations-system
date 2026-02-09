@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { getSession } from "@/actions/auth";
 import { redirect } from "next/navigation";
 import UserManagementClient from "@/components/UserManagementClient";
+import AdminGuard from "@/components/AdminGuard";
 
 export default async function UsersPage() {
     const session = await getSession();
@@ -34,14 +35,16 @@ export default async function UsersPage() {
     });
 
     return (
-        <UserManagementClient
-            activeUsers={activeUsers}
-            pendingUsers={pendingUsers}
-            currentUser={{
-                email: session.user.email,
-                role: session.user.role,
-                isUsersAuthorized: !!session.user.isUsersAuthorized
-            }}
-        />
+        <AdminGuard>
+            <UserManagementClient
+                activeUsers={activeUsers}
+                pendingUsers={pendingUsers}
+                currentUser={{
+                    email: session.user.email,
+                    role: session.user.role,
+                    isUsersAuthorized: !!session.user.isUsersAuthorized
+                }}
+            />
+        </AdminGuard>
     );
 }

@@ -16,9 +16,19 @@ async function getStats(month?: string) {
         lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     }
 
-    // This aggregation relies on our Transaction model
-    // We need to group by type
-    const donations = await prisma.transaction.aggregate({
+    // 1. Lifetime Total Balance (Wallet)
+    const totalDonations = await prisma.transaction.aggregate({
+        where: { type: "DONATION", isActive: true },
+        _sum: { amount: true }
+    });
+    const totalExpenses = await prisma.transaction.aggregate({
+        where: { type: "EXPENSE", isActive: true },
+        _sum: { amount: true }
+    });
+    const walletBalance = (totalDonations._sum.amount || 0) - (totalExpenses._sum.amount || 0);
+
+    // 2. Monthly Stats
+    const monthlyDonations = await prisma.transaction.aggregate({
         where: {
             type: "DONATION",
             isActive: true,
@@ -32,7 +42,7 @@ async function getStats(month?: string) {
         }
     });
 
-    const expenses = await prisma.transaction.aggregate({
+    const monthlyExpenses = await prisma.transaction.aggregate({
         where: {
             type: "EXPENSE",
             isActive: true,
@@ -47,9 +57,9 @@ async function getStats(month?: string) {
     });
 
     return {
-        donations: donations._sum.amount || 0,
-        expenses: expenses._sum.amount || 0,
-        balance: (donations._sum.amount || 0) - (expenses._sum.amount || 0)
+        walletBalance,
+        monthlyDonations: monthlyDonations._sum.amount || 0,
+        monthlyExpenses: monthlyExpenses._sum.amount || 0,
     };
 }
 
@@ -68,13 +78,13 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-800">لوحة التحكم</h1>
-                    <p className="text-gray-500 mt-2">نظرة عامة على التبرعات والمصروفات</p>
+                    <p className="text-gray-500 mt-2">نظرة عامة على محفظة التبرعات والمصروفات</p>
                 </div>
                 <MonthSelector />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Donation Card */}
+                {/* Monthly Donations Card */}
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group">
                     <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                         <TrendingUp size={100} />
@@ -83,12 +93,12 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                         <div className="p-3 bg-green-50 text-green-600 rounded-xl border border-green-100">
                             <TrendingUp size={24} />
                         </div>
-                        <h3 className="text-black font-black text-lg">إجمالي التبرعات</h3>
+                        <h3 className="text-black font-black text-lg">تبرعات الشهر</h3>
                     </div>
-                    <p className="text-3xl font-black text-black">{stats.donations.toLocaleString()} ج.م</p>
+                    <p className="text-3xl font-black text-black">{stats.monthlyDonations.toLocaleString()} ج.م</p>
                 </div>
 
-                {/* Expense Card */}
+                {/* Monthly Expenses Card */}
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group">
                     <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                         <TrendingDown size={100} />
@@ -97,23 +107,23 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                         <div className="p-3 bg-red-50 text-red-600 rounded-xl border border-red-100">
                             <TrendingDown size={24} />
                         </div>
-                        <h3 className="text-black font-black text-lg">إجمالي المصروفات</h3>
+                        <h3 className="text-black font-black text-lg">مصروفات الشهر</h3>
                     </div>
-                    <p className="text-3xl font-black text-black">{stats.expenses.toLocaleString()} ج.م</p>
+                    <p className="text-3xl font-black text-black">{stats.monthlyExpenses.toLocaleString()} ج.م</p>
                 </div>
 
-                {/* Balance Card */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group">
+                {/* Wallet Balance Card (Lifetime) */}
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-blue-100 relative overflow-hidden group">
                     <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                         <Wallet size={100} />
                     </div>
                     <div className="flex items-center gap-4 mb-4">
-                        <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl border border-indigo-100">
+                        <div className="p-3 bg-blue-50 text-blue-600 rounded-xl border border-blue-100">
                             <Wallet size={24} />
                         </div>
-                        <h3 className="text-black font-black text-lg">الرصيد المتبقي</h3>
+                        <h3 className="text-black font-black text-lg">رصيد الصندوق (الحالي)</h3>
                     </div>
-                    <p className="text-3xl font-black text-black">{stats.balance.toLocaleString()} ج.م</p>
+                    <p className="text-3xl font-black text-black">{stats.walletBalance.toLocaleString()} ج.م</p>
                 </div>
             </div>
 

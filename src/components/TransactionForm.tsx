@@ -66,8 +66,8 @@ export default function TransactionForm() {
                     <input
                         name="name"
                         required
-                        placeholder=""
-                        className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 outline-none transition-all font-black text-black placeholder:text-gray-400 text-xl"
+                        placeholder="مثال: تبرع فاعل خير / شراء كراسي"
+                        className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 outline-none transition-all font-black text-black placeholder:text-gray-300 text-xl"
                     />
                 </div>
 
@@ -79,7 +79,7 @@ export default function TransactionForm() {
                             type="number"
                             step="0.01"
                             required
-                            placeholder="0.00"
+                            placeholder="0"
                             className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 outline-none transition-all font-black text-black text-xl"
                         />
                     </div>
@@ -104,7 +104,7 @@ export default function TransactionForm() {
                         name="notes"
                         rows={3}
                         placeholder=""
-                        className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 outline-none transition-all font-black text-black placeholder:text-gray-400 text-xl"
+                        className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 outline-none transition-all font-black text-black placeholder:text-gray-300 text-xl"
                     ></textarea>
                 </div>
 

@@ -71,3 +71,21 @@ export async function logout() {
     session.destroy();
     redirect("/login");
 }
+
+export async function verifyAdminPassword(password: string) {
+    const session = await getSession();
+    if (!session.user?.isLoggedIn || session.user.role !== "ADMIN") {
+        return { error: "غير مصرح لك" };
+    }
+
+    const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+    });
+
+    if (!user) return { error: "المستخدم غير موجود" };
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return { error: "كلمة المرور غير صحيحة" };
+
+    return { success: true };
+}
