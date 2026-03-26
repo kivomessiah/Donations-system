@@ -28,7 +28,8 @@ export default function TransactionList({
     const [filterType, setFilterType] = useState("ALL");
     const [search, setSearch] = useState("");
 
-    const isViewer = userRole === "VIEWER";
+    const isViewer = userRole === "VIEWER" || userRole === "RESTRICTED";
+    const isRestricted = userRole === "RESTRICTED";
 
     const handleToggle = async (id: string) => {
         if (confirm("هل أنت متأكد من تغيير حالة السجل؟")) {
@@ -55,6 +56,7 @@ export default function TransactionList({
                         className="w-full pr-10 pl-4 py-3 rounded-xl border-2 border-gray-100 outline-none focus:border-indigo-600 font-black text-black text-lg"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
+                        disabled={isRestricted}
                     />
                 </div>
                 <div className="flex gap-2">
@@ -122,7 +124,9 @@ export default function TransactionList({
                                             {t.type === 'DONATION' ? 'تبرع' : 'مصروف'}
                                         </span>
                                     </td>
-                                    <td className="p-5 font-black text-black text-lg">{t.name}</td>
+                                    <td className="p-5 font-black text-black text-lg">
+                                        {isRestricted && t.type === 'DONATION' ? 'فاعل خير' : t.name}
+                                    </td>
                                     <td className="p-5 font-black text-black text-lg">{t.amount.toLocaleString()}</td>
                                     <td className="p-5 text-black font-black">
                                         {t.type === 'DONATION' ? (
@@ -133,7 +137,9 @@ export default function TransactionList({
                                             </span>
                                         ) : '-'}
                                     </td>
-                                    <td className="p-5 text-black font-bold">{t.enteredBy?.split('@')[0]}</td>
+                                    <td className="p-5 text-black font-bold">
+                                        {isRestricted ? '-' : t.enteredBy?.split('@')[0]}
+                                    </td>
                                     <td className="p-5">
                                         <span className={`px-3 py-1 rounded-full text-xs font-black ${t.isActive ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-gray-200 text-gray-700 border border-gray-300'
                                             }`}>

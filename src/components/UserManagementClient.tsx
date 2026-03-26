@@ -152,12 +152,14 @@ export default function UserManagementClient({
                                         <td className="p-5">
                                             <span className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-black ${user.role === 'ADMIN' ? 'bg-purple-100 text-purple-800 border border-purple-200' :
                                                 user.role === 'VIEWER' ? 'bg-amber-100 text-amber-800 border border-amber-200' :
-                                                    'bg-blue-100 text-blue-800 border border-blue-200'
+                                                    user.role === 'RESTRICTED' ? 'bg-gray-100 text-gray-800 border border-gray-200' :
+                                                        'bg-blue-100 text-blue-800 border border-blue-200'
                                                 }`}>
                                                 {user.role === 'ADMIN' && <Shield size={16} />}
                                                 {user.role === 'VIEWER' && <Eye size={16} />}
+                                                {user.role === 'RESTRICTED' && <EyeOff size={16} />}
                                                 {user.role === 'FINANCE' && <Wallet size={16} />}
-                                                {user.role}
+                                                {user.role === 'RESTRICTED' ? 'RESTRICTED (بدون أسماء)' : user.role}
                                             </span>
                                         </td>
                                         <td className="p-5 text-center">
@@ -292,6 +294,7 @@ export default function UserManagementClient({
                                     <label className="block text-sm font-black text-black mb-2 mr-1">الصلاحية</label>
                                     <select name="role" defaultValue={isEditModalOpen ? targetUser?.role : "VIEWER"} required className="w-full px-5 py-4 rounded-2xl border-2 border-gray-100 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 outline-none font-black text-black text-lg bg-white appearance-none transition-all">
                                         <option value="VIEWER">مشاهد (Viewer) - عرض فقط</option>
+                                        <option value="RESTRICTED">مُطلع بدون أسماء (Restricted)</option>
                                         <option value="ENTRY">مدخل بيانات (Entry)</option>
                                         <option value="FINANCE">ماليات (Finance)</option>
                                         <option value="ADMIN">مدير (Admin)</option>

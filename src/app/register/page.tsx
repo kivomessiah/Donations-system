@@ -84,6 +84,7 @@ export default function RegisterPage() {
                             className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-4 focus:ring-indigo-100 outline-none font-black text-black bg-white"
                         >
                             <option value="VIEWER">مشاهد (Viewer) - عرض فقط</option>
+                            <option value="RESTRICTED">مُطلع بدون أسماء (Restricted)</option>
                             <option value="ENTRY">مدخل بيانات (Entry)</option>
                             <option value="ADMIN">مدير (Admin)</option>
                         </select>

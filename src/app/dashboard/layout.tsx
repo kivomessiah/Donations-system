@@ -31,7 +31,7 @@ export default async function DashboardLayout({
             name: "لوحة التحكم",
             href: "/dashboard",
             icon: LayoutDashboard,
-            roles: ["ADMIN", "FINANCE", "VIEWER"],
+            roles: ["ADMIN", "FINANCE", "VIEWER", "RESTRICTED"],
         },
         {
             name: "إضافة عملية",
@@ -43,7 +43,7 @@ export default async function DashboardLayout({
             name: "التقارير",
             href: "/dashboard/reports",
             icon: FileText,
-            roles: ["ADMIN", "FINANCE", "VIEWER"],
+            roles: ["ADMIN", "FINANCE", "VIEWER", "RESTRICTED"],
         },
         {
             name: "المستخدمين",
