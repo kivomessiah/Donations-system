@@ -60,6 +60,8 @@ async function getStats(month?: string) {
         walletBalance,
         monthlyDonations: monthlyDonations._sum.amount || 0,
         monthlyExpenses: monthlyExpenses._sum.amount || 0,
+        lifetimeDonations: totalDonations._sum.amount || 0,
+        lifetimeExpenses: totalExpenses._sum.amount || 0,
     };
 }
 
@@ -124,6 +126,36 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                         <h3 className="text-black font-black text-lg">رصيد الصندوق (الحالي)</h3>
                     </div>
                     <p className="text-3xl font-black text-black">{stats.walletBalance.toLocaleString()} ج.م</p>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                {/* Lifetime Donations Card */}
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <TrendingUp size={100} />
+                    </div>
+                    <div className="flex items-center gap-4 mb-4">
+                        <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100">
+                            <TrendingUp size={24} />
+                        </div>
+                        <h3 className="text-black font-black text-lg">إجمالي التبرعات (منذ البداية)</h3>
+                    </div>
+                    <p className="text-3xl font-black text-black">{stats.lifetimeDonations.toLocaleString()} ج.م</p>
+                </div>
+
+                {/* Lifetime Expenses Card */}
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <TrendingDown size={100} />
+                    </div>
+                    <div className="flex items-center gap-4 mb-4">
+                        <div className="p-3 bg-rose-50 text-rose-600 rounded-xl border border-rose-100">
+                            <TrendingDown size={24} />
+                        </div>
+                        <h3 className="text-black font-black text-lg">إجمالي المصروفات (منذ البداية)</h3>
+                    </div>
+                    <p className="text-3xl font-black text-black">{stats.lifetimeExpenses.toLocaleString()} ج.م</p>
                 </div>
             </div>
 

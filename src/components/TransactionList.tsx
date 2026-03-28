@@ -125,7 +125,7 @@ export default function TransactionList({
                                         </span>
                                     </td>
                                     <td className="p-5 font-black text-black text-lg">
-                                        {isRestricted && t.type === 'DONATION' ? 'فاعل خير' : t.name}
+                                        {isRestricted && t.type === 'DONATION' ? '-' : t.name}
                                     </td>
                                     <td className="p-5 font-black text-black text-lg">{t.amount.toLocaleString()}</td>
                                     <td className="p-5 text-black font-black">
