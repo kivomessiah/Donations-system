@@ -102,16 +102,16 @@ export default function TransactionList({
                                 <th className="p-5">النوع</th>
                                 <th className="p-5">الاسم / البند</th>
                                 <th className="p-5">المبلغ</th>
-                                <th className="p-5">طريقة الدفع</th>
-                                <th className="p-5">المسؤول</th>
-                                <th className="p-5">الحالة</th>
+                                {!isRestricted && <th className="p-5">طريقة الدفع</th>}
+                                {!isRestricted && <th className="p-5">المسؤول</th>}
+                                {!isRestricted && <th className="p-5">الحالة</th>}
                                 {!isViewer && <th className="p-5">إجراءات</th>}
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
                             {filtered.length === 0 ? (
                                 <tr>
-                                    <td colSpan={8} className="p-10 text-center text-black font-black text-lg">لا توجد بيانات</td>
+                                    <td colSpan={isRestricted ? 4 : 8} className="p-10 text-center text-black font-black text-lg">لا توجد بيانات</td>
                                 </tr>
                             ) : filtered.map((t) => (
                                 <tr key={t.id} className={`hover:bg-indigo-50/30 transition-colors ${!t.isActive ? 'opacity-40 bg-gray-50' : ''}`}>
@@ -128,24 +128,30 @@ export default function TransactionList({
                                         {isRestricted && t.type === 'DONATION' ? '-' : t.name}
                                     </td>
                                     <td className="p-5 font-black text-black text-lg">{t.amount.toLocaleString()}</td>
-                                    <td className="p-5 text-black font-black">
-                                        {t.type === 'DONATION' ? (
-                                            <span className="bg-indigo-100 text-indigo-900 px-2 py-1 rounded-lg text-xs font-black">
-                                                {t.paymentMethod === 'CASH' && 'نقدي'}
-                                                {t.paymentMethod === 'BANK' && 'بنكي'}
-                                                {t.paymentMethod === 'MOBILE' && 'موبايل'}
+                                    {!isRestricted && (
+                                        <td className="p-5 text-black font-black">
+                                            {t.type === 'DONATION' ? (
+                                                <span className="bg-indigo-100 text-indigo-900 px-2 py-1 rounded-lg text-xs font-black">
+                                                    {t.paymentMethod === 'CASH' && 'نقدي'}
+                                                    {t.paymentMethod === 'BANK' && 'بنكي'}
+                                                    {t.paymentMethod === 'MOBILE' && 'موبايل'}
+                                                </span>
+                                            ) : '-'}
+                                        </td>
+                                    )}
+                                    {!isRestricted && (
+                                        <td className="p-5 text-black font-bold">
+                                            {t.enteredBy?.split('@')[0]}
+                                        </td>
+                                    )}
+                                    {!isRestricted && (
+                                        <td className="p-5">
+                                            <span className={`px-3 py-1 rounded-full text-xs font-black ${t.isActive ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-gray-200 text-gray-700 border border-gray-300'
+                                                }`}>
+                                                {t.isActive ? 'نشط' : 'ملغي'}
                                             </span>
-                                        ) : '-'}
-                                    </td>
-                                    <td className="p-5 text-black font-bold">
-                                        {isRestricted ? '-' : t.enteredBy?.split('@')[0]}
-                                    </td>
-                                    <td className="p-5">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-black ${t.isActive ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-gray-200 text-gray-700 border border-gray-300'
-                                            }`}>
-                                            {t.isActive ? 'نشط' : 'ملغي'}
-                                        </span>
-                                    </td>
+                                        </td>
+                                    )}
                                     {!isViewer && (
                                         <td className="p-4">
                                             <button

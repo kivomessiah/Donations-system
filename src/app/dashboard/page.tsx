@@ -123,7 +123,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                         <div className="p-3 bg-blue-50 text-blue-600 rounded-xl border border-blue-100">
                             <Wallet size={24} />
                         </div>
-                        <h3 className="text-black font-black text-lg">رصيد الصندوق (الحالي)</h3>
+                        <h3 className="text-black font-black text-lg">الرصيد الحالي</h3>
                     </div>
                     <p className="text-3xl font-black text-black">{stats.walletBalance.toLocaleString()} ج.م</p>
                 </div>
@@ -139,7 +139,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                         <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100">
                             <TrendingUp size={24} />
                         </div>
-                        <h3 className="text-black font-black text-lg">إجمالي التبرعات (منذ البداية)</h3>
+                        <h3 className="text-black font-black text-lg">إجمالي التبرعات</h3>
                     </div>
                     <p className="text-3xl font-black text-black">{stats.lifetimeDonations.toLocaleString()} ج.م</p>
                 </div>
@@ -153,7 +153,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                         <div className="p-3 bg-rose-50 text-rose-600 rounded-xl border border-rose-100">
                             <TrendingDown size={24} />
                         </div>
-                        <h3 className="text-black font-black text-lg">إجمالي المصروفات (منذ البداية)</h3>
+                        <h3 className="text-black font-black text-lg">إجمالي المصروفات</h3>
                     </div>
                     <p className="text-3xl font-black text-black">{stats.lifetimeExpenses.toLocaleString()} ج.م</p>
                 </div>
