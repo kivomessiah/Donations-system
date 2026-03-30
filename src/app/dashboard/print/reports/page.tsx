@@ -36,7 +36,10 @@ export default async function PrintReportsPage() {
                 <tbody>
                     {transactions.map(t => (
                         <tr key={t.id}>
-                            <td className="border border-gray-300 p-2">{new Date(t.date).toLocaleDateString('ar-EG')}</td>
+                            <td className="border border-gray-300 p-2 text-xs">
+                                <div>{new Date(t.date).toLocaleDateString('ar-EG')}</div>
+                                <div className="text-[10px] text-gray-500">{new Date(t.date).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}</div>
+                            </td>
                             <td className="border border-gray-300 p-2">{t.type === 'DONATION' ? 'تبرع' : 'مصروف'}</td>
                             <td className="border border-gray-300 p-2">{t.name}</td>
                             <td className="border border-gray-300 p-2">{t.amount.toLocaleString()}</td>

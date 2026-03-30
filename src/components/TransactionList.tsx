@@ -116,7 +116,8 @@ export default function TransactionList({
                             ) : filtered.map((t) => (
                                 <tr key={t.id} className={`hover:bg-indigo-50/30 transition-colors ${!t.isActive ? 'opacity-40 bg-gray-50' : ''}`}>
                                     <td className="p-5 text-black font-bold whitespace-nowrap">
-                                        {new Date(t.date).toLocaleDateString('ar-EG')}
+                                        <div className="text-sm">{new Date(t.date).toLocaleDateString('ar-EG')}</div>
+                                        <div className="text-xs text-gray-500">{new Date(t.date).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}</div>
                                     </td>
                                     <td className="p-5 font-black">
                                         <span className={`px-3 py-1 rounded-lg text-xs font-black ${t.type === 'DONATION' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'
