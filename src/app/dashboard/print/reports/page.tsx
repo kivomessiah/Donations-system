@@ -6,9 +6,14 @@ export default async function PrintReportsPage() {
     const session = await getSession();
     if (!session.user?.isLoggedIn) redirect("/login");
 
+    const where: any = {};
+    if (session.user?.role !== "ADMIN") {
+        where.isActive = true;
+    }
+
     const transactions = await prisma.transaction.findMany({
         orderBy: { date: 'desc' },
-        where: { isActive: true } // Only active for print? Or all? Let's say all for audit, but maybe active mostly.
+        where
     });
 
     return (

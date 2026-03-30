@@ -20,6 +20,11 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
         };
     }
 
+    // Security: Only Admins can see retracted (inactive) transactions
+    if (session.user?.role !== "ADMIN") {
+        where.isActive = true;
+    }
+
     // Fetch all transactions, ordered by newest first
     const transactions = await prisma.transaction.findMany({
         where,
